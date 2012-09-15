@@ -1,0 +1,15 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if data.has_previous %}
+            <a href="{%if url %} {{url}}&page={{ data.previous_page_number }} {% else %} ?page={{ data.previous_page_number }}{% endif %} ">上一页</a>
+        {% endif %}
+
+        <span class="current">
+          共{{data.paginator.count}}条记录  Page {{ data.number }} of {{ data.paginator.num_pages }}.
+        </span>
+
+        {% if data.has_next %}
+            <a href="{%if url %} {{url}}&page={{ data.next_page_number }} {% else %} ?page={{ data.next_page_number }} {% endif %}">下一页</a>
+        {% endif %}
+    </span>
+</div>

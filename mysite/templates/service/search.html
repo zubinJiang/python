@@ -1,0 +1,96 @@
+{% extends "content_base.html" %}
+
+{%block content%}
+	{% if msg %}
+		<div class='{{msg.css}}'>
+   			<p>{{msg.msg}}</p>
+		</div>
+             <br />
+	{% endif %}
+
+    <h3 class="marginbot">
+                    管理邮件
+        {% if parent %}
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}app/">返回邮件列表</a>
+        {% if admin or actor %}
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}app/add/">新建邮件</a>
+        {% endif %}
+        {% endif %}
+        {% if not parent %}
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}app/add/">新建邮件</a>
+        {% endif %}
+    </h3>
+    <div id="tabs" >
+
+        <div id="tabs-1">
+            <form action="app/search" method="get">
+                <input type="hidden" name='page' value='1'/>
+                <table>
+                    <tr>
+                        <td>标题</td>
+                        <td><input type='text' name='title' value='{{title|default_if_none:''}}' /></td>
+                        <td>
+                            
+                            <input type="hidden" name='parent' value='{{parent|default_if_none:''}}' />
+                            <input type='submit' name='dosearch' value='搜索' />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+	<h3>项目 列表</h3>
+	<div class="mainbox">
+	<form method="post" id='optform' action="{{MContext.SITE_PATH}}app/batchDelete/" > 
+		{% csrf_token %}
+		<table class="datalist fixwidth" id="datatable">
+			<tr>
+				<th nowrap="nowrap" style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="chkall" id="chkall"  class="checkbox" />
+				</th>
+				<th nowrap="nowrap" >ID</th>
+				<th nowrap="nowrap">邮件标题</th>
+				<th nowrap="nowrap">发件人</th>
+				<th nowrap="nowrap">发件信箱</th>
+				<th nowrap="nowrap">创建时间</th>
+				<th nowrap="nowrap">定时发送时间</th>
+				<th nowrap="nowrap">删除状态（0为正常，1为删除）</th>
+			</tr>
+			{% if listData %}
+				{% for app in listData.object_list %}
+			<tr class="nobg">
+				<td style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="ids" value="{{app.id}}" class="checkbox" />
+				</td>
+				<td>{{app.id}}</td>
+				<td>{{app.title}}</td>
+				<td>{{app.fromname}}</td>
+				<td>{{app.fromemail}}</td>
+				<td>{{app.tm}}</td>
+				<td>{{app.senddt}}</td>
+				<td>{{app.flag}}</td>
+				{% endfor %}
+			</tr>
+			{% endif %}
+			<tr>
+                <td colspan="6">
+
+                    <label>
+                    <input type="radio" name='opt' value='0' id='radiodel' checked="checked" />批量删除
+                    </label>
+
+                    <input class="btn"  type="submit" value="提 交"/>
+                    
+                    
+                </td>
+                {% autoescape off %}
+                <td class="tdpage" colspan="6">{% include "pager_list.html"%}</td>
+                {% endautoescape %}
+
+			</tr>
+		</table>
+		<div id='opt'></div>
+	</form>
+	</div>
+{% endblock %}
+{% block scripts%}

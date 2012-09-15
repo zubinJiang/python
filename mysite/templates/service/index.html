@@ -1,0 +1,142 @@
+{% extends "content_base.html" %}
+
+{%block content%}
+	{% if msg %}
+		<div class='{{msg.css}}'>
+   			<p>{{msg.msg}}</p>
+		</div>
+             <br />
+	{% endif %}
+
+    <h3 class="marginbot">
+                    管理邮件
+
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}app/">返回邮件列表</a>
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}app/add/">新建邮件</a>
+
+    </h3>
+    <div id="tabs">
+        <ul>
+            <li style="height:20px;"><a href="#tabs-1">邮件列表</a></li>
+        </ul>
+    <form action="?" method="get">
+	                <table>
+	                    <tr>
+	                        <td>邮件标题</td>
+	                        <td>{{form.title}}</td>
+	                        <td>
+	                            &nbsp;&nbsp;<input class="btn" type='submit' name='dosearch' value='提交' />
+	                        </td>
+	                    </tr>
+	                </table>
+	</form>
+
+    </div>
+
+	<div class="mainbox">
+	<form method="post" id='optform' action="{{MContext.SITE_PATH}}app/batchDelete/" > 
+		{% csrf_token %}
+		<table class="datalist fixwidth" id="datatable">
+			<tr>
+				<th nowrap="nowrap" style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="chkall" id="chkall"  class="checkbox" />
+				</th>
+				<th nowrap="nowrap" >ID</th>
+				<th nowrap="nowrap">邮件标题</th>
+				<th nowrap="nowrap">发件人</th>
+				<th nowrap="nowrap">发件信箱</th>
+				<th nowrap="nowrap">创建时间</th>
+				<th nowrap="nowrap">定时发送时间</th>
+				<th nowrap="nowrap">删除状态（0为正常，1为删除）</th>
+				<th nowrap="nowrap">操作</th>
+			</tr>
+			{% if listData %}
+				{% for app in listData.object_list %}
+			<tr class="nobg">
+				<td style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="ids" value="{{app.id}}" class="checkbox" />
+				</td>
+				<td>{{app.id}}</td>
+				<td>{{app.title}}</td>
+				<td>{{app.fromname}}</td>
+				<td>{{app.fromemail}}</td>
+				<td>{{app.tm}}</td>
+				<td>{{app.senddt}}</td>
+				<td>{{app.flag}}</td>
+				<td><a href="{{MContext.SITE_PATH}}app/edit/{{app.id}}">修改|</a>&nbsp;<a href="{{MContext.SITE_PATH}}app/delete/{{app.id}}" onclick="if (confirm('确定删除？')) { return true; } return false;" >删除</a></td>
+				{% endfor %}
+			</tr>
+			{% endif %}
+			<tr>
+                <td colspan="6">
+
+                    <label>
+                    <input type="radio" name='opt' value='0' id='radiodel' checked="checked" />批量删除
+                    </label>
+
+                    <input class="btn"  type="submit" value="提 交"/>
+                    
+                    
+                </td>
+                {% autoescape off %}
+                <td class="tdpage" colspan="6">{% include "pager_list.html"%}</td>
+                {% endautoescape %}
+
+			</tr>
+		</table>
+		<div id='opt'></div>
+	</form>
+	</div>
+{% endblock %}
+{% block scripts%}
+<script type="text/javascript" src="{{Mcontext.JQUERY_PATH}}ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" >
+    $().ready(function(){
+        /*
+    	$('#tabs').tabs();
+        $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+        $('#mintime').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+        });
+        $('#maxtime').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+      	});
+        */
+        $('#chkall').click(function(){
+            check = $(this).attr('checked');
+            $('#datatable').find(':checkbox').each(function(){
+                $(this).attr('checked',check);
+            });
+        });
+
+        $('#optform').attr('action',"{{MContext.SITE_PATH}}app/batchDelete/");
+        $("#optform").unbind("submit");
+        $('#optform').submit(function(){
+            return confirm('真的要删除这些应用吗？');
+        });
+		/*
+        $('#radiodel').click(function(){
+	        if ($(this).attr('checked')) {
+	        	$('#optform').attr('action',"{{MContext.SITE_PATH}}app/batchDelete/");
+	        	$("#optform").unbind("submit");
+	        	$('#optform').submit(function(){
+	        		return confirm('真的要删除这些应用吗？');
+	            });
+	        }
+        });
+        */
+    });
+
+</script>
+{% endblock %}
+
+
+{% if info %}
+	<a href="/app/add/">{{info}}</a>
+{% else %}
+	<p>You does not have the permission.</p>
+{% endif %}

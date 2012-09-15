@@ -1,0 +1,49 @@
+{%extends "base.html"%}
+{% block css %}
+<link rel="stylesheet" href="{{MContext.CSS}}admincp.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{MContext.JQUERY_CSS}}jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" />
+{% block customcss%}{% endblock %}
+{% endblock %}
+
+{% block body %}
+{% block append %}
+{% endblock%}
+<div class="container" >
+	{% block content %}{% endblock %}
+</div>
+<script type="text/javascript" src="{{MContext.JQUERY}}jquery.min.js"></script>
+<script type="text/javascript" src="{{MContext.JQUERY}}jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="{{MContext.JS}}common.js"></script>
+<script type="text/javascript" src="{{MContext.JS}}ckeditor/ckeditor.js"></script>
+<script type="text/javascript" >
+	$().ready(function(){
+		tableOverObj($('.datalist'), 'trhover');
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});  
+	});
+	
+	
+	
+</script>
+
+<script type="text/javascript">
+
+	
+function change(){
+	var abc=document.getElementById('myselect').value;
+	CKEDITOR.instances.content.setData('')
+	CKEDITOR.instances.content.setData(abc)
+	
+}
+</script>
+
+{% block scripts%}
+{% endblock %}
+
+{% block footer %}
+<div class="footer">Powered by Gyyx  &copy; 2010 - 2011 <a href="http://www.gyyx.cn" target="_blank">Gyyx</a> Inc.</div>
+{% endblock %}
+{% endblock %}

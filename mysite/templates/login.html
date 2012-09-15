@@ -1,0 +1,34 @@
+{% extends "content_base.html" %}
+{% block append %}
+<div id="append"></div>
+{% endblock%}
+{% block content%}
+	<form action="/admin/do_login/" method="post" id="loginform" >{%csrf_token%}
+		<table class="mainbox">
+			<tr>
+				<td class="loginbox">
+					<h1>{{title}}</h1>
+					<p>邮件系统，是为了方便大家交流和管理的重要工具</p>
+				</td>
+			</tr>
+
+			<tr>
+				<td class="login">
+					{% if msg %}
+					<div class="errormsg loginmsg"><p>{{msg}}</p></div>
+					{% endif %}
+					<p id="usernamediv">用户名:<input type="text" name="username" class="txt" tabindex="1" id="username" value="{{username}}" /></p>
+					<p>密　码:<input type="password" name="passwd" class="txt" tabindex="2" id="password" value="" /></p>
+					<p class="loginbtn"><input type="submit" name="submit" value="登 录" class="btn" tabindex="3" /></p>
+				</td>
+			</tr>
+		</table>
+		<input name="forward" type="hidden" id="forward" value="{{MContext.SITE_PATH}}frame/">
+	</form>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	$('#username').focus();
+</script>
+{% endblock %}

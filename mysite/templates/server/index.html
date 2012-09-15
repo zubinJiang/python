@@ -1,0 +1,95 @@
+{% extends "content_base.html" %}
+
+{%block content%}
+	{% if msg %}
+		<div class='{{msg.css}}'>
+   			<p>{{msg.msg}}</p>
+		</div>
+             <br />
+	{% endif %}
+
+    <h3 class="marginbot">
+        管理服务器
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}server/add/">添加新服务器</a>
+    </h3>
+
+	<br />
+	<div class="mainbox">
+	<form method="post" id='optform' action="{{MContext.SITE_PATH}}server/batchDelete/" > 
+	{% csrf_token%}
+		<table class="datalist fixwidth" id="datatable">
+			<tr>
+				<th nowrap="nowrap" style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="chkall" id="chkall"  class="checkbox" />
+				</th>
+				<th nowrap="nowrap" >ID</th>
+				<th nowrap="nowrap">主机</th>
+				<th nowrap="nowrap">端口</th>
+				<th nowrap="nowrap">账号或者用户名</th>
+				<th nowrap="nowrap">Flag</th>
+				<th nowrap="nowrap">操作</th>
+			</tr>
+			{% if data %}
+				{% for me in data %}
+			<tr class="nobg">
+				<td style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="ids" value="{{me.shid}}" class="checkbox" /></td>
+				<td>{{me.shid}}</td>
+				<td>{{me.shost}}</td>
+				<td>{{me.sport}}</td>
+				<td>{{me.suser}}</td>
+				<td>{% if me.flag == 1 %} 正在运行 {% else %} {% if me.flag == 2 %} 测试  {% else %} 停用 {% endif %}{% endif %}</td>
+				<td>
+					<a href="{{MContext.SITE_PATH}}server/edit/{{me.shid}}/">修改</a>&nbsp;|&nbsp;
+					<a href="{{MContext.SITE_PATH}}server/flag/{{me.shid}}/0" onclick="return confirm('真的要更改服务器分类[{{me.shost}}]吗？');">停用</a>&nbsp;|&nbsp;
+					<a href="{{MContext.SITE_PATH}}server/flag/{{me.shid}}/1" onclick="return confirm('真的要更改服务器分类[{{me.shost}}]吗？');">启用</a>&nbsp;|&nbsp;
+					<a href="{{MContext.SITE_PATH}}server/flag/{{me.shid}}/2" onclick="return confirm('真的要更改服务器分类[{{me.shost}}]吗？');">测试</a>&nbsp;|&nbsp;
+					<a href="{{MContext.SITE_PATH}}server/delete/{{me.shid}}/" onclick="return confirm('真的要删除服务器分类[{{me.shost}}]吗？');">删除</a>
+
+				</td>
+				{% endfor %}
+			</tr>
+			{% endif %}
+			<tr>
+                <td colspan="3">
+
+                    <label><input type="radio" name='opt' value='0' id='radiodel' checked="checked" />删除</label>
+
+                    <input class="btn"  type="submit" value="提 交"/>
+                </td>
+			</tr>
+		</table>
+		<div id='opt'></div>
+	</form>
+	</div>
+{% endblock %}
+{% block scripts%}
+
+<script type="text/javascript" >
+    $().ready(function(){
+    	$('#tabs').tabs();
+
+        $('#chkall').click(function(){
+            check = $(this).attr('checked');
+            $('#datatable').find(':checkbox').each(function(){
+                $(this).attr('checked',check);
+            });
+        });
+
+        $('#optform').attr('action',"{{site_path}}task/batchDelete/");
+        $("#optform").unbind("submit");
+        $('#optform').submit(function(){
+            return confirm('真的要删除这些项目吗？这些操作将无法恢复。');
+        });
+
+    });
+
+</script>
+{% endblock %}
+
+
+{% if info %}
+	<a href="/service/add/">{{info}}</a>
+{% else %}
+	<p>You does not have the permission.</p>
+{% endif %}

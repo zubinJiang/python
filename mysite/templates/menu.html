@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<title>Project Administrator's Control Panel</title>
+<link rel="stylesheet" href="{{MContext.CSS}}menu.css" type="text/css" media="screen" />
+<meta content="Gyyx Inc." name="Copyright" />
+</head>
+<body>
+<div class="menu">
+	<ul id="leftmenu">
+		{% if menu %}
+			{% for m in menu%}
+				<li><a href="{{MContext.SITE_PATH}}{{m.menu_link}}" target="{{m.menu_target}}" title="{{m.menu_name}}">{{m.menu_name}}</a></li>
+			{% endfor %}
+		{% endif %}
+	</ul>
+</div>
+<div class="footer">Powered by Gyyx <br />&copy; 2010 - 2100 <a href="http://www.gyyx.cn/" target="_blank">Gyyx</a> Inc.</div>
+<script type="text/javascript">
+	function cleartabon() {
+	/*	if(lastmenu) {
+			lastmenu.className = '';
+		}*/
+		for(var i = 0; i < menus.length; i++) {
+			var menu = menus[i];
+			menu.className = '';
+		}
+	}
+
+	var menus = document.getElementById('leftmenu').getElementsByTagName('a');
+	//var lastmenu = '';
+	for(var i = 0; i < menus.length; i++) {
+		var menu = menus[i];
+		menu.onclick = function() {
+			//setTimeout('cleartabon()', 1);
+			cleartabon();
+			this.className = 'tabon';
+			this.blur();
+		};
+	}
+
+	//cleartabon();
+</script>
+</body>
+</html>

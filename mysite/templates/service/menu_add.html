@@ -1,0 +1,35 @@
+{% extends "content_base.html" %}
+
+{% block tilte %}添加应用{% endblock %}
+{% block customcss %}
+<style type="text/css">
+	td ul {display: block;}
+	td ul li {float: left;}
+</style>
+{% endblock %}
+{% block content %}
+
+<br/>
+<h3 class=“marginbox”>
+应用管理
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}menu/index/">返回菜单列表</a>
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}menu/add/">添加新菜单</a>
+</h3>
+<br/>
+<div class="mainbox">
+	<form class="add_form" method="post" action="?">
+	{% csrf_token %}
+		<table class="opt">
+				{{form.as_table}}
+		</table>
+		<div class="opt">
+			<input class="btn" type="submit" tabindex="3" value="提交" name="submit" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input class="btn" type="reset" tabindex="4" value="重置" name="reset" />
+		</div>
+	</form>
+</div>
+
+
+
+{% endblock %}

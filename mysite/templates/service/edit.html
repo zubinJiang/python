@@ -1,0 +1,89 @@
+{% extends "content_base.html" %}
+
+{% block tilte %}编辑应用{% endblock %}
+
+{% block content %}
+
+<br/>
+<h3 class=“marginbox”>
+邮件管理
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}app/index/">返回邮件列表</a>
+</h3>
+<div class="mainbox">
+	<form class="add_form" method="post" action="{{MContext.SITE_PATH}}app/save/">
+	{% csrf_token %}
+		<table class="opt">
+			<tbody>
+				<tr><th colspan="2">邮件标题</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='title' value='{% if appInfo %}{{appInfo.title}}{% endif %}' />
+					</td>
+				</tr>
+				<tr><th colspan="2">发件人</th></tr>
+				<tr>
+					<td>
+                        <input type='text' name='fromname' value='{% if appInfo %}{{appInfo.fromname}}{% endif %}' />
+					</td>
+				</tr>
+				<tr><th colspan="2">发送邮箱</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='fromemail' value='{% if appInfo %}{{appInfo.fromemail}}{% endif %}' />
+					</td>
+				</tr>
+
+				<tr><th colspan="2">定时发送时间</th></tr>
+				<tr>
+					<td>
+						<input type='text' id="datepicker" name='senddt' value='{% if appInfo %}{{appInfo.senddt}}{% endif %}' />*时间格式：2011-09-08
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<input type='hidden'  name='tm' value='' />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="opt">
+			<input type="hidden" name="id" value="{% if appInfo %}{{appInfo.id}}{% endif %}" />
+			<input class="btn" type="submit" tabindex="3" value="提交" name="submit" />
+		</div>
+	</form>
+</div>
+
+
+<!--
+{% if field_list %}
+	{{field_list.app_name}}
+{% endif %}
+ -->
+<!--
+{% for fl in field_list %}
+	{{fl.app_name}}
+{% endfor %}
+-->
+
+{% endblock %}
+<!--
+{% block scripts %}
+<script type="text/javascript" src="{{site_path}}js/jquery/ui/i18n/jquery.ui.datepicker-zh-CN.js"></script>
+<script type="text/javascript" >
+    $().ready(function(){
+        $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
+        $('#deadline').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+        });
+        $('#starttime').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+      });
+    });
+</script>
+{% endblock %}
+ -->

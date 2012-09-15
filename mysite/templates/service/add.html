@@ -1,0 +1,115 @@
+<style type="text/css">
+<!--
+.STYLE1 {
+	color: #00FFFF;
+	font-weight: bold;
+}
+.STYLE4 {
+	color: #666666;
+	font-size: 18px;
+}
+-->
+</style>
+
+
+{% extends "content_base.html" %}
+
+{% block tilte %}添加邮件{% endblock %}
+{% block customcss %}
+<style type="text/css">
+	td ul {display: block;}
+	td ul li {float: left;}
+</style>
+{% endblock %}
+{% block content %}
+
+<br/>
+
+<br/>
+<div class="mainbox">
+	<form class="add_form" method="post" action="?" enctype="multipart/form-data">
+	{% csrf_token %}
+		<table width="951" class="opt" border="0">
+		 <tr>
+			<td colspan="3"><span class="STYLE1"><span class="STYLE4">请填写您的邮件内容：</span></span></td>
+		  </tr>		
+
+		  <tr>
+			<td width="106">邮件编号</td>
+			<td width="813"><input type='text' name='id' value='' /> * 不能重复且不能为空，如：14 </td>
+			<td width="18">&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>邮件标题</td>
+			<td><input type='text' name='title' value='' /> * 合法输入内容</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>发件人</td>
+			<td><input type='text' name='fromname' value='' /> * 请填写正确的发件人</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>收件人列表</td>
+			<td><input type='file' name='tonametxtlist' value = ''/>*不能为空，否则会出现错误</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>发件信箱</td>
+			<td><input type='text' name='fromemail' value='' /> * 请填写正确的发件人邮箱，如：lele919@126.com</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>模板选择</td>
+			<td>
+			<select name='myselect' id="myselect" onchange="change()">
+			    <option selected = "selected" value="">请您选择你需要的模板</option>
+			 {% if data %}
+			     {% for me in data %}
+			     <option value='{{me.content}}'>{{me.name}}</option>
+			     {% endfor %}
+			 {% endif %}
+			</select>
+
+			</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>邮件内容</td>
+			<td>
+			<textarea name="content" id = "content" rows = "6"></textarea>	
+			
+			<script type="text/javascript">
+			   CKEDITOR.replace("content"); 
+			</script>
+
+			</td>
+			<td>&nbsp;</td>
+		  </tr>
+		  <tr>
+			<td>定时发送时间</td>
+			<div class= "demo">
+			<td><input type="text" name="senddt" id="datepicker"/> * 请确保时间格式正确</td>
+			</div>
+			<td>&nbsp;</td>
+		  </tr>
+		  	<tr>
+			<div class= "demo">
+			<td><input type="hidden" name="tm" ></td>
+			</div>
+			<td>&nbsp;</td>
+		  </tr>
+</table>
+       
+			
+		<div class="opt">
+			<input class="btn" type="submit" tabindex="3" value="提交" name="submit" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input class="btn" type="reset" tabindex="4" value="重置" name="reset" />
+		</div>
+	</form>
+</div>
+
+
+
+{% endblock %}

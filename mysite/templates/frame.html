@@ -1,0 +1,34 @@
+{% extends "frame_base.html"%}
+
+{%block body%}
+<table cellpadding="0" cellspacing="0" width="100%" style="height:100%; margin:0; padding:0;">
+	<tr>
+		<td colspan="2" style="height:69px;margin:0; padding:0;"><iframe style="height:69px;" src="{{MContext.SITE_PATH}}frame/header/" name="header" width="100%" scrolling="no" frameborder="0"></iframe></td>
+	</tr>
+	<tr id='bodytr' style="height:100%">
+		<td id='bodytd' valign="top" width="160" style="margin:0; padding:0;" ><iframe src="{{MContext.SITE_PATH}}frame/menu/" name="menu"  width="160" height="100%" scrolling="no" frameborder="0"></iframe></td>
+		<td valign="top" style="margin:0; padding:0;" ><iframe src="{{MContext.SITE_PATH}}frame/index/" name="main" width="100%" height="100%" frameborder="0" scrolling="yes" style="overflow:visible;"></iframe></td>
+	</tr>
+</table>
+<script type="text/javascript">
+ var height = document.body.offsetHeight
+ var bodytr = document.getElementById('bodytr')
+ bodytr.style.height = height - 69;
+ //document.getElementById('bodytd').style.height = '100%';
+ var Sys = {};
+ var ua = navigator.userAgent.toLowerCase();
+ window.ActiveXObject ? Sys.ie = ua.match(/msie ([\d.]+)/)[1] : 0 ;
+ document.getBoxObjectFor ? Sys.firefox = ua.match(/firefox\/([\d.]+)/)[1] : 0 ;
+ window.MessageEvent && !document.getBoxObjectFor ? Sys.chrome = (ua.match(/chrome\/([\d.]+)/) ? ua.match(/chrome\/([\d.]+)/)[1] : '') : 0;
+ window.opera ? Sys.opera = ua.match(/opera.([\d.]+)/)[1] : 0;
+ window.openDatabase ? Sys.safari = ua.match(/version\/([\d.]+)/)[1] : 0;
+
+ if (!Sys.ie){
+
+	  document.getElementById('bodytd').style.height = '100%';
+
+ }
+
+</script>
+
+{% endblock %}

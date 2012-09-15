@@ -1,0 +1,60 @@
+{% extends "content_base.html" %}
+
+{% block tilte %}编辑应用{% endblock %}
+{% block customcss %}
+<style type="text/css">
+	td ul {display: block;}
+	td ul li {float: left;}
+</style>
+{% endblock %}
+{% block content %}
+
+<br/>
+<h3 class=“marginbox”>
+应用管理
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}menu/index/">返回菜单列表</a>
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}menu/add/">添加新菜单</a>
+</h3>
+<br/>
+<div class="mainbox">
+	<form class="edit_form" method="post" action="{{MContext.SITE_PATH}}menu/save/">
+	{% csrf_token %}
+		<table class="opt">
+				<tr><th colspan="2">菜单名称</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='menu_name' value='{% if menuInfo %}{{menuInfo.menu_name}}{% endif %}'/>
+					</td>
+				</tr>
+				<tr><th colspan="2">菜单链接</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='menu_link' value='{% if menuInfo %}{{menuInfo.menu_link}}{% endif %}'/>
+					</td>
+				</tr>
+				<tr><th colspan="2">菜单链接目标</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='menu_target' value='{% if menuInfo %}{{menuInfo.menu_target}}{% endif %}'/>
+					</td>
+				</tr>
+				<tr><th colspan="2">是否可见</th></tr>
+				<tr>
+					<td>
+						<select name='menu_visibility'>
+							<option value=0 {% if menuInfo and menuInfo.menu_visibility == 0 %} selected="selected" {% endif %}>否</option>
+							<option value=1 {% if menuInfo and menuInfo.menu_visibility == 1 %} selected="selected" {% endif %}>是</option>
+						</select>
+					</td>
+				</tr>
+		</table>
+		<div class="opt">
+		    <input type="hidden" name="id" value="{% if menuInfo %}{{menuInfo.id}}{% endif %}" />
+			<input class="btn" type="submit" tabindex="3" value="提交" name="submit" />
+		</div>
+	</form>
+</div>
+
+
+
+{% endblock %}

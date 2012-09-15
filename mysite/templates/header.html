@@ -1,0 +1,11 @@
+{% extends "frame_base.html"%}
+{% block body %}
+<div class="mainhd">
+	<div class="logo">Email system - Administrator's Control Panel</div>
+	<div class="uinfo">
+		<p>你好, <em>{{curruser.username}}</em> [ <a href="{{MContext.SITE_PATH}}" target="_top">退出</a> ]</p>
+			<!-- <p id="others"><a href="#" class="othersoff" ></a></p> -->
+
+	</div>
+</div>
+{% endblock %}

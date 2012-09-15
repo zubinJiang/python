@@ -1,0 +1,71 @@
+{% extends "content_base.html" %}
+
+{% block tilte %}添加模板{% endblock %}
+{% block customcss %}
+<style type="text/css">
+	td ul {display: block;}
+	td ul li {float: left;}
+</style>
+{% endblock %}
+{% block content %}
+
+<br/>
+<h3 class=“marginbox”>
+模板管理
+	<a class="sgbtn" href="{{MContext.SITE_PATH}}manage_pattern/">返回模板列表</a>
+</h3>
+<br/>
+
+<div class="mainbox">
+	<form class="add_form" method="post" action="{{MContext.SITE_PATH}}manage_pattern/save/">{% csrf_token %}
+		<table class="opt">
+			<tbody>
+
+             	<tr><th colspan="2">模板名称</th></tr>
+				<tr>
+					<td>
+						<input type='text' name='name' value='{% if patternInfo %}{{patternInfo.name}}{% endif %}' />
+					</td>
+				</tr>
+				<tr><th colspan="2">名称简写</th></tr>
+				<tr>
+					<td>
+                        <input type='text' name='alias' value='{% if patternInfo %}{{patternInfo.alias}}{% endif %}' />
+					</td>
+				</tr>
+				<tr><th colspan="2"">模板内容</th></tr>
+				<tr>
+					<td>
+                    <textarea name="content" id = "content" rows = "6" value='{% if patternInfo %}{{patternInfo.content}}{% endif %}'>{% if patternInfo %}{{patternInfo.content}}{% endif %}</textarea>
+			
+                    <script type="text/javascript">
+			        CKEDITOR.replace("content"); 
+			        </script> 
+					</td>
+				</tr>
+				<tr><th colspan="2">编辑者</th></tr>
+				<tr>
+					<td>
+                        <input type='text' name='edit_user' value='{% if patternInfo %}{{patternInfo.edit_user}}{% endif %}' />
+					</td>
+				</tr>
+				<tr>
+					<td>
+                        <input type='hidden' name='update_time'/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="opt">
+		<input type="hidden" name="id" value="{% if patternInfo %}{{patternInfo.id}}{% endif %}" />
+			<input class="btn" type="submit" tabindex="3" value="提交" name="submit" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input class="btn" type="reset" tabindex="4" value="重置" name="reset" />
+		</div>
+	</form>
+</div>
+
+
+
+{% endblock %}

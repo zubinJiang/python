@@ -1,0 +1,92 @@
+{% extends "content_base.html" %}
+
+{%block content%}
+	{% if msg %}
+		<div class='{{msg.css}}'>
+   			<p>{{msg.msg}}</p>
+		</div>
+             <br />
+	{% endif %}
+
+    <h3 class="marginbot">
+        管理模板分类
+        <a class="sgbtn" href="{{MContext.SITE_PATH}}manage_pattern/add/">添加新模板</a>
+    </h3>
+
+	<br />
+	<div class="mainbox">
+	<form method="post" id='optform' action="{{MContext.SITE_PATH}}manage_pattern/batchDelete/" > 
+	   {% csrf_token%}
+		<table class="datalist fixwidth" id="datatable">
+			<tr>
+				<th nowrap="nowrap" style="width:10px;"><input style="padding:1px;margin:0px;" type="checkbox" name="chkall" id="chkall"  class="checkbox" /></th>
+				<th nowrap="nowrap" >模板名称</th>
+				<th nowrap="nowrap">分类简写</th>
+				<th nowrap="nowrap">编辑者</th>
+				<th nowrap="nowrap">更新日期</th>
+				<th nowrap="nowrap">操作</th>
+			</tr>
+			{% if data %}
+				{% for me in data.object_list %}
+			<tr class="nobg">
+				<td style="width:10px;">
+				<input style="padding:1px;margin:0px;" type="checkbox" name="ids" value="{{me.id}}" class="checkbox" />
+				</td>
+				<td>{{me.name}}</td>
+				<td>{{me.alias}}</td>
+				<td>{{me.edit_user}}</td>
+				<td>{{me.update_time}}</td>
+				<td>
+					<a href="{{MContext.SITE_PATH}}manage_pattern/edit/{{me.id}}/">修改</a>&nbsp;|&nbsp;
+					<a href="{{MContext.SITE_PATH}}manage_pattern/delete/{{me.id}}/" onclick="return confirm('真的要删除服务器分类[{{me.category_name}}]吗？');">删除</a>
+
+				</td>
+				{% endfor %}
+			</tr>
+			{% endif %}
+			<tr>
+                <td colspan="5">
+
+                    <label><input type="radio" name='opt' value='0' id='radiodel' checked="checked" />删除</label>
+
+                    <input class="btn"  type="submit" value="提 交"/>
+                    {% autoescape off %}
+                        <td class="tdpage" colspan="5">	{% include "pager.html"%}</td>
+                        {% endautoescape %}
+                </td>
+			</tr>
+		</table>
+		<div id='opt'></div>
+	</form>
+	</div>
+{% endblock %}
+{% block scripts%}
+
+<script type="text/javascript" >
+    $().ready(function(){
+    	$('#tabs').tabs();
+
+        $('#chkall').click(function(){
+            check = $(this).attr('checked');
+            $('#datatable').find(':checkbox').each(function(){
+                $(this).attr('checked',check);
+            });
+        });
+
+        $('#optform').attr('action',"{{site_path}}task/batchDelete/");
+        $("#optform").unbind("submit");
+        $('#optform').submit(function(){
+            return confirm('真的要删除这些项目吗？这些操作将无法恢复。');
+        });
+
+    });
+
+</script>
+{% endblock %}
+
+
+{% if info %}
+	<a href="/service/add/">{{info}}</a>
+{% else %}
+	<p>You does not have the permission.</p>
+{% endif %}
